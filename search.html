@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blood Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <style>
+    	.brownish{
+			color:#d63845;
+		}
+		.center {
+			/*background-color:red;*/
+			position: absolute;
+			left: 50%;
+			top: 20%;
+			transform: translate(-50%, -50%);
+			padding: 10px;
+		}
+		.samples{
+			margin-top:15rem;
+		}
+	</style>
+  </head>
+  <body>
+  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <a class="navbar-brand text-danger" href="#">BLOOD BANK</a>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+          <span class="d-flex" role="search" style="margin-right: 100px">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	            <li class="nav-item">
+	              <a class="nav-link" href="./index.html">Home</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./whyToDonate.html">Why to Donate</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./search.html">Search</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./register.html">Register</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./about.html">About</a>
+	            </li>
+          	</ul>
+          </span>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="container mt-5">
+      <div class="row">
+            <div class="col">
+              <select id="bloodGroup" class="form-select" required>
+                <option selected value="">Choose Blood Group</option>
+                <option value="1">AB+</option>
+                <option value="2">AB-</option>
+                <option value="3">O+</option>
+                <option value="4">O-</option>
+                <option value="5">B+</option>
+                <option value="6">B-</option>
+                <option value="7">A+</option>
+                <option value="8">A-</option>
+              </select>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary" id="search">Submit</button>
+            </div>
+      </div>
+      <div class="row mt-4" id="detail">
+        
+      </div>
+
+ 	<script>
+    const server = `https://blood-bank-api-call.herokuapp.com`
+ 		let search = document.getElementById('search');
+ 		let bloodGroup = document.getElementById('bloodGroup');
+ 		search.addEventListener('click',async ()=>{
+ 			const url = server + '/search/?bloodGroup=' + bloodGroup.value;
+ 			let data = await fetch(url);
+ 			data = await data.json();
+ 			console.log("data",data);
+      // if no donars exist then disply alert just for 3 sec
+      if(Object.keys(data).length === 0){
+        let div = document.createElement('div');
+        div.className = 'alert alert-danger';
+        div.role = 'alert';
+        div.id = 'nouser';
+        div.innerHTML = `
+       <h3>Oops! No such user found</h3> `
+        document.getElementById('detail').appendChild(div);
+        setTimeout(function() {
+            document.getElementById('nouser').remove();
+        }, 3000);
+      }else{ // if users exist
+        for(let key of data){
+        console.log(key);
+        const age = key.Age;
+        const district = key.District;
+        const email = key.Email;
+        const gender = key.Gender;
+        const name = key.Name;
+        const state = key.State;
+        const mobile = key.Mobile;
+        console.log(age,district,email,gender,name,state,mobile);
+
+
+        let div = document.createElement('div');
+        div.className = 'col-lg-3 mb-4';
+        div.innerHTML = `
+       <div class="card">
+                  <img class="card-img-top" src="./img/blood.jpg" alt="">
+                  <div class="card-body">
+                      <h5 class="card-title">Name: ${name}</h5>
+                      <p class="card-text">Mobile: ${mobile}</p>
+                      <p class="card-text">Age: ${age}</p>
+                      <p class="card-text">Address: ${district}, ${state}</p>
+                  </div>
+              </div>`
+        document.getElementById('detail').appendChild(div);
+      }
+    }
+   })
+
+ </script>
+	             
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+      .Trirong{
+        font-family: "Trirong", serif;
+      }
+      .brownish{
+        color:#d63845;
+      }
+      .bg-brownish{
+        background-color:#a84055;
+      }
+      .center {
+        margin-left:50%;
+        transform:translateX(-50%);
+        /*width: 60%;*/
+        /*padding: 10px;*/
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+          <a class="navbar-brand text-danger" href="#">BLOOD BANK</a>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+          <span class="d-flex" role="search" style="margin-right: 100px">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	            <li class="nav-item">
+	              <a class="nav-link" href="./index.html">Home</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./whyToDonate.html">Why to Donate</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./search.html">Search</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./register.html">Register</a>
+	            </li>
+	            <li class="nav-item">
+	              <a class="nav-link" href="./about.html">About</a>
+	            </li>
+          	</ul>
+          </span>
+        </div>
+      </div>
+    </nav>
+
+
+
+<div class="container">
+  	<div class="row">
+    <!-- profile -->
+	    <div class="col-4" style="margin-top: 3rem;">
+	      <img src="./img/pic5.webp" class="img-fluid mx-auto d-block" alt="donating blood" width="100%">
+	      <img src="./img/cc1.jpg" class="img-fluid mx-auto d-block" alt="donating blood" width="100%">
+	      <h6 style="text-align: center;">Donate Blood Because You Never Know How Helpful It Might Be To Someone.</h6>
+	    </div>
+
+	    <!-- to register -->
+	    <div class="col-8" style="margin-top: 3.5rem;">
+	      	<div class="mw-100 bg-brownish" style="padding:10px">
+	        	<h1 class="center">Register Here...</h1>
+	    </div>
+	     <div class="alert alert-danger alert-dismissible fade show" id="fillit" role="alert">
+          Please Fill all the Particulars
+       </div>
+       <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+		  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+		    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+		  </symbol>
+		</svg>
+		<div class="alert-success alert alert-dismissible fade show" id="filled" role="alert">
+		  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+		  <div>
+		    Thanks for Registering. <br>
+		    Donate BLOOD and SAVE Life
+		  </div>
+		</div>
+		
+		
+
+
+	    <form class="row g-3 mt-4" method="GET" action="https://blood-bank-api-call.herokuapp.com/">
+          <div class="col-md-6">
+            <label for="username" class="form-label">Name</label>
+            <input type="text" class="form-control" id="username" placeholder="Enter Full Name" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail4"placeholder="abc@gmail.com" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="mobile" class="form-label">Mobile Number</label>
+            <input type="tel" class="form-control" id="mobile" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" required>
+          </div>
+
+           <div class="col-md-6">
+            <label for="state" class="form-label">State</label>
+            <!-- <input type="text" class="form-control" id="state" placeholder="Enter State" required> -->
+            <select id="state" class="form-select" required>
+              <option selected value="">Choose...</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="district" class="form-label">District</label>
+            <!-- <input type="text" class="form-control" id="inputCity" placeholder="Enter City" required> -->
+            <select id="district" class="form-select" required>
+              <option selected value="">Choose...</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label for="bloodGroup" class="form-label">Blood Group</label>
+            <select id="bloodGroup" class="form-select" required>
+              <option selected value="">Choose...</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label for="gender" class="form-label">Gender</label>
+            <select id="gender" class="form-select" required>
+              <option selected value="">Choose...</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="age" placeholder="Enter Age" required>
+          </div>
+
+          
+          <div class="col-12">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck" required>
+              <label class="form-check-label" for="gridCheck" id="check">
+                All options given are totally correct
+              </label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary" id="submitbtn">Submit</button>
+          </div>
+	    </form>
+		</div>
+	</div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+    <script>
+
+    const server = "https://blood-bank-api-call.herokuapp.com";
+
+    let fillit = document.getElementById('fillit').style.display = 'none';
+    let filled = document.getElementById('filled').style.display = 'none';
+      // fetch('./states.json')
+      // .then((response) => {
+      //   return response.json();
+      // })
+      // .then((myJson) => {
+      //   console.log(myJson);
+      // });
+      let jsondata;
+      async function fetchState(){
+        return new Promise(async (resolve,reject)=>{
+          let url = `${server}/states`;
+          let data = await fetch(url);
+          data = await data.json();
+          resolve(data);
+        });
+      }
+
+      async function fun(){
+        let state = document.getElementById('state');
+        let district = document.getElementById('district');
+
+        let data = await fetchState();
+        jsondata = data;
+        let idx = 0;
+        for(let st of data.states){
+            const option = document.createElement('option');
+            option.setAttribute('value',`${idx}`);
+            option.innerHTML = st.state;
+            state.appendChild(option);
+            idx++;
+        }
+      }
+      fun();
+      let state = document.getElementById('state');
+      state.addEventListener('change',()=>{
+          let val = parseInt(state.value);
+
+          for(let dis of jsondata.states[val].districts){
+            const option = document.createElement('option');
+            option.innerHTML = dis;
+            district.appendChild(option);
+          }
+
+      })
+      document.getElementById('submitbtn').addEventListener('click',async (event)=>{
+      	  event.preventDefault();
+          let username = document.getElementById('username').value;
+          let mail = document.getElementById('inputEmail4').value;
+          let mobile = document.getElementById('mobile').value;
+          let state =document.getElementById('state').value;
+          let district = document.getElementById('district').value
+          let blood = document.getElementById('bloodGroup').value
+          let gender = document.getElementById('gender').value
+          let age = document.getElementById('age').value
+
+
+          console.log(username,mail,mobile,state,district,blood,gender,age);
+          if(username != '' && mail != '' && mobile != ''&& state != ''&& district != ''&& blood != ''&& gender != '' && age != ''){
+
+          	  document.getElementById('filled').style.display = 'block';
+              setTimeout(function() {
+		        document.getElementById('filled').remove();
+		    }, 3000);
+              
+              const inputs = document.querySelectorAll('#username, #inputEmail4,#mobile,#state,#district,#bloodGroup,#gender,#age,#check');
+              inputs.forEach(input => {
+                input.value = '';
+              });
+
+            let body = {
+              name : username,
+              email: mail,
+              mobile : mobile,
+              state : state,
+              district : district,
+              "BloodGroup" : blood,
+              gender : gender,
+              age : age
+            }
+            body = JSON.stringify(body);
+            const obj = {
+              'method' : 'post',
+              'headers' : {
+                'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+              },
+              'body' : body
+            };
+            const url = `${server}/add`;
+            const data = await fetch(url,obj);
+            data = await data.json();
+
+          }else{
+              document.getElementById('fillit').style.display = 'block';
+              setTimeout(function() {
+		        document.getElementById('fillit').remove();
+		    }, 3000);
+          }
+      })
+    </script>
+  </body>
+</html>
