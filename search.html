@@ -154,8 +154,8 @@
  			data = await data.json();
  			console.log("data",data);
       // if no donars exist then disply alert just for 3 sec
+ 	  document.getElementById('detail').innerHTML = '';
       if(Object.keys(data).length === 0){
-        document.getElementById('detail').innerHTML = '';
         let div = document.createElement('div');
         div.className = 'alert alert-danger';
         div.role = 'alert';
