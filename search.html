@@ -58,9 +58,27 @@
 
     <div class="container mt-5">
       <div class="row">
-            <div class="col">
+
+          <div class="col-md-3">
+              <label for="state" class="form-label">State</label>
+              <!-- <input type="text" class="form-control" id="state" placeholder="Enter State" required> -->
+              <select id="state" class="form-select" required>
+                <option selected value="">Choose...</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label for="district" class="form-label">District</label>
+              <!-- <input type="text" class="form-control" id="inputCity" placeholder="Enter City" required> -->
+              <select id="district" class="form-select" required>
+                <option selected value="">Choose...</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label for="district" class="form-label">Blood Group</label>
               <select id="bloodGroup" class="form-select" required>
-                <option selected value="">Choose Blood Group</option>
+                <option selected value="-1">None</option>
                 <option value="1">AB+</option>
                 <option value="2">AB-</option>
                 <option value="3">O+</option>
@@ -71,7 +89,7 @@
                 <option value="8">A-</option>
               </select>
             </div>
-            <div class="col">
+            <div class="col-md-3" style="margin-top:31.5px">
               <button type="submit" class="btn btn-primary" id="search">Submit</button>
             </div>
       </div>
@@ -80,16 +98,64 @@
       </div>
 
  	<script>
-    const server = `https://blood-bank-api-call.herokuapp.com`
+    const server = "https://blood-bank-api-call.herokuapp.com";
  		let search = document.getElementById('search');
  		let bloodGroup = document.getElementById('bloodGroup');
+
+    let jsondata;
+    async function fetchState(){
+      return new Promise(async (resolve,reject)=>{
+        let url = `${server}/states`;
+        let data = await fetch(url);
+        data = await data.json();
+        resolve(data);
+      });
+    }
+
+      async function fun(){
+        let state = document.getElementById('state');
+        let district = document.getElementById('district');
+
+        let data = await fetchState();
+        jsondata = data;
+        let idx = 0;
+        for(let st of data.states){
+            const option = document.createElement('option');
+            option.setAttribute('value',`${idx}`);
+            option.innerHTML = st.state;
+            state.appendChild(option);
+            idx++;
+        }
+      }
+      fun();
+      let state = document.getElementById('state');
+      state.addEventListener('change',()=>{
+        district.innerHTML = '';
+          let val = parseInt(state.value);
+          let idx = 0;
+          for(let dis of jsondata.states[val].districts){
+            const option = document.createElement('option');
+            option.setAttribute('value',`${idx}`);
+            option.innerHTML = dis;
+            district.appendChild(option);
+            idx++;
+          }
+
+      })
+
+
+
  		search.addEventListener('click',async ()=>{
- 			const url = server + '/search/?bloodGroup=' + bloodGroup.value;
+      let state = document.getElementById('state');
+      let dist = document.getElementById('district');
+      const url = `${server}/search?state=${state.value}&dist=${dist.value}&blood=${bloodGroup.value}`;
+      console.log(url);
  			let data = await fetch(url);
  			data = await data.json();
  			console.log("data",data);
       // if no donars exist then disply alert just for 3 sec
       if(Object.keys(data).length === 0){
+        document.getElementById('detail').innerHTML = '';
         let div = document.createElement('div');
         div.className = 'alert alert-danger';
         div.role = 'alert';
@@ -101,16 +167,21 @@
             document.getElementById('nouser').remove();
         }, 3000);
       }else{ // if users exist
-        for(let key of data){
-        console.log(key);
-        const age = key.Age;
-        const district = key.District;
-        const email = key.Email;
-        const gender = key.Gender;
-        const name = key.Name;
-        const state = key.State;
-        const mobile = key.Mobile;
-        console.log(age,district,email,gender,name,state,mobile);
+        for(let user of data){
+        const age = user.age;
+        const district = user.district;
+        const name = user.name;
+        const bloodgroup = user.blood_group;
+        const state = user.state;
+        const mobile = user.mobile;
+        const regdatetime = user.registration_date_time;
+        var s = new Date(regdatetime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'});
+        time = s.split(' ')[1];
+        s = s.split(' ')[0].split('/');
+        date = s[0];
+        month = s[1];
+        year = s[2];
+        console.log(age,district,name,bloodgroup,state,mobile,date,month,year,time);
 
 
         let div = document.createElement('div');
@@ -122,7 +193,7 @@
                       <h5 class="card-title">Name: ${name}</h5>
                       <p class="card-text">Mobile: ${mobile}</p>
                       <p class="card-text">Age: ${age}</p>
-                      <p class="card-text">Address: ${district}, ${state}</p>
+                      <p class="card-text">Registration Date Time : ${date}-${month}-${year} ${time}</p>
                   </div>
               </div>`
         document.getElementById('detail').appendChild(div);

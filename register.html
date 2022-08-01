@@ -81,7 +81,7 @@
 		</svg>
 		<div class="alert-success alert alert-dismissible fade show" id="filled" role="alert">
 		  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-		  <div>
+		  <div id = "msg">
 		    Thanks for Registering. <br>
 		    Donate BLOOD and SAVE Life
 		  </div>
@@ -126,14 +126,14 @@
             <label for="bloodGroup" class="form-label">Blood Group</label>
             <select id="bloodGroup" class="form-select" required>
               <option selected value="">Choose...</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
+              <option value="1+">AB+</option>
+              <option value="2-">AB-</option>
+              <option value="3+">O+</option>
+              <option value="4-">O-</option>
+              <option value="5+">B+</option>
+              <option value="6-">B-</option>
+              <option value="7+">A+</option>
+              <option value="8-">A-</option>
             </select>
           </div>
 
@@ -141,8 +141,8 @@
             <label for="gender" class="form-label">Gender</label>
             <select id="gender" class="form-select" required>
               <option selected value="">Choose...</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="1">Male</option>
+              <option value="0">Female</option>
             </select>
           </div>
 
@@ -169,30 +169,25 @@
 	</div>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
 
     const server = "https://blood-bank-api-call.herokuapp.com";
 
-    let fillit = document.getElementById('fillit').style.display = 'none';
-    let filled = document.getElementById('filled').style.display = 'none';
-      // fetch('./states.json')
-      // .then((response) => {
-      //   return response.json();
-      // })
-      // .then((myJson) => {
-      //   console.log(myJson);
-      // });
-      let jsondata;
-      async function fetchState(){
-        return new Promise(async (resolve,reject)=>{
-          let url = `${server}/states`;
-          let data = await fetch(url);
-          data = await data.json();
-          resolve(data);
-        });
-      }
+    let fillit = document.getElementById('fillit');
+    let filled = document.getElementById('filled');
+    fillit.style.display = 'none';
+    filled.style.display = 'none';
+    let jsondata;
+    async function fetchState(){
+      return new Promise(async (resolve,reject)=>{
+        let url = `${server}/states`;
+        let data = await fetch(url);
+        data = await data.json();
+        resolve(data);
+      });
+    }
 
       async function fun(){
         let state = document.getElementById('state');
@@ -212,68 +207,105 @@
       fun();
       let state = document.getElementById('state');
       state.addEventListener('change',()=>{
+          district.innerHTML = '';
           let val = parseInt(state.value);
-
+          let idx = 0;
           for(let dis of jsondata.states[val].districts){
             const option = document.createElement('option');
+            option.setAttribute('value',`${idx}`);
             option.innerHTML = dis;
             district.appendChild(option);
+            idx++;
           }
 
       })
+
+      function displayError(){
+        document.getElementById('fillit').style.display = 'block';
+        setTimeout(function(){
+          fillit.style.display = 'none';
+        },3000);
+      }
+
       document.getElementById('submitbtn').addEventListener('click',async (event)=>{
       	  event.preventDefault();
-          let username = document.getElementById('username').value;
-          let mail = document.getElementById('inputEmail4').value;
-          let mobile = document.getElementById('mobile').value;
-          let state =document.getElementById('state').value;
-          let district = document.getElementById('district').value
-          let blood = document.getElementById('bloodGroup').value
-          let gender = document.getElementById('gender').value
-          let age = document.getElementById('age').value
+          let username = document.getElementById('username');
+          let mail = document.getElementById('inputEmail4');
+          let mobile = document.getElementById('mobile');
+          let state =document.getElementById('state');
+          let district = document.getElementById('district');
+          let blood = document.getElementById('bloodGroup');
+          let gender = document.getElementById('gender');
+          let age = document.getElementById('age');
+          let selected = document.getElementById('gridCheck');
 
-
-          console.log(username,mail,mobile,state,district,blood,gender,age);
-          if(username != '' && mail != '' && mobile != ''&& state != ''&& district != ''&& blood != ''&& gender != '' && age != ''){
-
-          	  document.getElementById('filled').style.display = 'block';
-              setTimeout(function() {
-		        document.getElementById('filled').remove();
-		    }, 3000);
-              
-              const inputs = document.querySelectorAll('#username, #inputEmail4,#mobile,#state,#district,#bloodGroup,#gender,#age,#check');
-              inputs.forEach(input => {
-                input.value = '';
-              });
-
+          if(username.value == ''){
+            displayError();
+            username.focus();
+          }else if(mail.value == ''){
+            displayError();
+            mail.focus();
+          }else if(district.value == ''){
+            displayError();
+            district.focus();
+          }else if(blood.value == ''){
+            displayError();
+            blood.focus();
+          }else if(gender.value == ''){
+            displayError();
+            gender.focus();
+          }else if(age.value == ''){
+            displayError();
+            age.focus();
+          }else if(selected.checked == false){
+            displayError();
+            selected.focus();
+          }
+          else{
+            
             let body = {
-              name : username,
-              email: mail,
-              mobile : mobile,
-              state : state,
-              district : district,
-              "BloodGroup" : blood,
-              gender : gender,
-              age : age
-            }
+              name : username.value,
+              email : mail.value,
+              mobile : mobile.value,
+              state : state.value,
+              district : district.value,
+              blood : blood.value,
+              gender : gender.value,
+              age : age.value
+            };
             body = JSON.stringify(body);
             const obj = {
               'method' : 'post',
               'headers' : {
-                'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json'
               },
               'body' : body
             };
-            const url = `${server}/add`;
-            const data = await fetch(url,obj);
-            data = await data.json();
 
-          }else{
-              document.getElementById('fillit').style.display = 'block';
-              setTimeout(function() {
-		        document.getElementById('fillit').remove();
-		    }, 3000);
+            const url = `${server}/add`;
+            let data = await fetch(url,obj);
+            data = await data.json();
+            console.log(data)
+            if(data.status == 200){
+              document.getElementById('msg').innerHTML = data.message;
+              username.value = '';
+              mail.value = '';
+              district.value = '';
+              blood.value = '';
+              gender.value = '';
+              age.value = '';
+              filled.style.display = 'block';
+              setTimeout(function(){
+                filled.style.display = 'none';
+              },3000);
+            }else{
+              fillit.innerHTML = data.message;
+              fillit.style.display = 'block';
+              setTimeout(function(){
+                fillit.style.display = 'none';
+              },3000);
+            }
           }
       })
     </script>
